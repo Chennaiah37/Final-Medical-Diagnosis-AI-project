@@ -10,11 +10,6 @@
 import os
 import sys
 from typing import Dict, List, Set
-
-# ------------------------------------------------------------------
-# 0.  COLOR UTILITIES (ANSI) – robust detection + optional flag
-# ------------------------------------------------------------------
-
 def _supports_color() -> bool:
     if os.getenv("NO_COLOR", "0") == "1":  # user override
         return False
@@ -41,10 +36,6 @@ BLUE = "\033[34m" if USE_COLOR else ""
 def c(text: str, style: str) -> str:
     """Return colored or plain text based on USE_COLOR."""
     return f"{style}{text}{RESET}" if USE_COLOR else text
-
-# ------------------------------------------------------------------
-# 1. RULE TABLES (unchanged)
-# ------------------------------------------------------------------
 DISEASE_RULES: Dict[str, Set[str]] = {
     "flu": {"fever", "cough", "body_ache", "fatigue"},
     "common cold": {"cough", "sore_throat", "runny_nose"},
@@ -81,10 +72,6 @@ DISEASE_TO_SPECIALIST: Dict[str, str] = {
 
 ALL_SYMPTOMS = sorted({s for sset in DISEASE_RULES.values() for s in sset})
 
-# ------------------------------------------------------------------
-# 2. CORE FUNCTIONS
-# ------------------------------------------------------------------
-
 def banner():
     print(c("\nAI MEDICAL DIAGNOSIS", BOLD + BLUE))
     print(c("Rule‑based symptom checker\n", DIM + CYAN))
@@ -108,10 +95,6 @@ def diagnose(symptoms: List[str]):
         spec = DISEASE_TO_SPECIALIST.get(disease, "Consult specialist")
         disease_str = f"{disease.title():<20}"
         print(f"{c(disease_str, GREEN)} ({matches} match)  →  {spec}")
-
-# ------------------------------------------------------------------
-# 3. MODES
-# ------------------------------------------------------------------
 
 def interactive():
     banner()
@@ -141,10 +124,6 @@ def demo():
     for t in tests:
         print(c(f"\nDemo: {', '.join(t)}", BOLD))
         diagnose(t)
-
-# ------------------------------------------------------------------
-# 4. MAIN
-# ------------------------------------------------------------------
 
 def main():
     print(c("Available symptoms:", BOLD + CYAN))
